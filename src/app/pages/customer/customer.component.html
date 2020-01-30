@@ -29,7 +29,7 @@
   </div>
   <div class="container" *ngIf="showcats">
     <div class="row row-cols-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3">
-      <div class="col meal-category" *ngFor="let subcategory of subcats" (click)="addToCart(subcategory)">
+      <div class="col meal-category" *ngFor="let subcategory of subcats" (click)="cartservice.addToCart(subcategory)">
         <div class="cat-bg">
           <span class="cat-name">{{subcategory.name}}</span>
           <p class="cat-price">{{subcategory.price}} $</p>
@@ -37,14 +37,14 @@
       </div>
     </div>
   </div>
-  <div class="row order-row" *ngIf="showorders">
+  <div class="row order-row"  *ngIf="cart && cart.items && cart.items.length">
     <div class="col bg-color1">
       <p class="order-title">
         ORDERS
       </p>
     </div>
   </div>
-  <div class="table-responsive" *ngIf="showorders">
+  <div class="table-responsive" *ngIf="cart && cart.items && cart.items.length">
   <table class="table table-borderless order-table">
     <thead>
       <tr>
@@ -71,7 +71,9 @@
     <tbody class="order-items" *ngFor="let item of cart.items">
       <tr>
         <th scope="row" class="bg-content">
-          <p class="order-title2"  *ngIf="showcats">({{mealname}}) {{item.name}}</p>
+          <p class="order-title2" *ngIf="item.meal_id">
+            ({{item.meal_id}}) 
+            {{item.name}}</p>
         </th>
         <td class="bg-content">
           <p class="order-title2"> 
@@ -106,7 +108,7 @@
             <p class="order-title1">$ {{getItemTotalPrice(item)}} </p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1"> _ </p>
+            <p class="order-title1"> {{getDisc(item)}} </p>
           </th>
           <th scope="col" class="foot-bg">          
             <p class="order-title1">$ {{getTax(item)}}</p>
@@ -120,7 +122,7 @@
     </tfoot>
   </table>
 </div>
-  <div class="container" *ngIf="showorders">
+  <div class="container" *ngIf="cart && cart.items && cart.items.length">
     <div class="row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-2">
       <div class="col">
         <p class="order-status">

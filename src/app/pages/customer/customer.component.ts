@@ -15,9 +15,9 @@ export class CustomerComponent implements OnInit {
       name: 'Biryani',
       image: 'assets/dummy/images/bri.jpg',
       subcategories: [
-        {id: 1, name: 'Family', price: 500, tax: 50, disc: 0, quantity: 2 },
-        {id: 2, name: 'Plate', price: 300, tax: 50, disc: 0, quantity: 1 },
-        {id: 3, name: 'Half Plate', price: 200, tax: 50, disc: 0, quantity: 1 }
+        {id: 1, name: 'Family', price: 500, tax: 50, disc: 0, quantity: 2, meal_id: 1 },
+        {id: 2, name: 'Plate', price: 300, tax: 50, disc: 0, quantity: 1,  meal_id: 1  },
+        {id: 3, name: 'Half Plate', price: 200, tax: 50, disc: 0, quantity: 1, meal_id: 1  }
       ]
     },
     {
@@ -25,9 +25,9 @@ export class CustomerComponent implements OnInit {
     name: 'Burger' ,
     image: 'assets/dummy/images/bur.jpg' ,
     subcategories: [
-      {id: 1, name: 'Large', price: 100, tax: 20, disc: 0, quantity: 1 },
-      {id: 2, name: 'Medium', price: 80, tax: 20, disc: 0, quantity: 1 },
-      {id: 3, name: 'Smal', price: 50, tax: 20, disc: 0, quantity: 1 }
+      {id: 1, name: 'Large', price: 100, tax: 20, disc: 0, quantity: 1, meal_id: 2  },
+      {id: 2, name: 'Medium', price: 80, tax: 20, disc: 0, quantity: 1, meal_id: 2  },
+      {id: 3, name: 'Smal', price: 50, tax: 20, disc: 0, quantity: 1, meal_id: 2  }
     ]
   },
     {
@@ -78,10 +78,7 @@ export class CustomerComponent implements OnInit {
   ];
 
   cart: any  = {
-    items: [
-      // {id: 1, name: 'Biryani (Family)', quantity: 2 , price: 500, tax: 50, disc: 0},
-      // {id: 2, name: 'Burger (Large)', quantity: 1, price: 100, tax: 20, disc: 0 }
-    ],
+    items: [],
     total: 0
   };
   showcats = false;
@@ -89,27 +86,24 @@ export class CustomerComponent implements OnInit {
   mealname: any = {};
   mealid: any = {};
   subcats: any = {};
+  order: any = {};
   constructor(
     public cartservice: CartService,
     private localStorage: LocalStorageService,
     public api: ApiService
     ) {
-
-      // api.getData('getitems').then(data => {this.meals    = data; console.log(this.meals); });
+      this.cart = this.cartservice.getCart();
+      // console.log(this.localStorage.get('cart'));
+      // this.api.getData('getitems').subscribe(data => {this.meals    = data;  console.log(this.meals); });
    }
 
   ngOnInit() {
-    const newTodo = 'new todo';
-    this.localStorage.storeOnLocalStorage(newTodo);
   }
-  addToCart(subcategory) {
-    this.showorders = true;
-    this.cart.items.push(subcategory);
-    console.log(this.cart, 'cart1');
-}
   showCats(meal) {
     this.showcats = true;
     this.mealname = meal.name;
+    // this.mealname = meal.subcategories.filter(elm => elm.id === elm.meal_id)[0].meal_id;
+    console.log(this.mealname, 'meal');
     this.mealid = meal.id;
     this.subcats =  meal.subcategories.map(elm => {
        return elm;
@@ -142,6 +136,7 @@ export class CustomerComponent implements OnInit {
       items: [],
       total: 0
     };
+    this.localStorage.remove('cart');
   }
   palceOrder() {
   }

@@ -1,5 +1,5 @@
+import { LocalStorageService } from 'src/app/services/storage/storage.service';
 import { Injectable } from '@angular/core';
-// import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +9,33 @@ export class CartService {
     items: [],
     total: 0
   };
-  // myStorage = window.localStorage;
-
+  showorders = false;
+  events: any;
   constructor(
-  ) { }
+    public storage: LocalStorageService) { }
   /**
    * Calc items total price
    * @param items [{price: any, count: any} ..]
    */
+  calcTotalPrice(items) {
+    return     this.cart.total = this.cart.items.reduce((acc, item) =>
+    acc + Number( Number(item.price)  *  Number(item.quantity)) + Number(item.tax), 0);
+  }
   public exist(item) {
     return this.cart.items.filter(elm => elm.id === item.id).length;
   }
+   cartChanged() {
+    this.cart.items = this.cart.items.map(item => {
+      item.total = item.price * item.count;
+      return item;
+    });
+    this.cart.total = this.calcTotalPrice(this.cart.items);
+    this.storage.set('cart', this.cart);
+  }
   getCart() {
+    // this.cart.items = this.storage.get('cart');
     return this.cart;
   }
-  // increase item count in cart
   increaseCount(item) {
     if (!this.exist(item)) {
       this.cart.items.push(item);
@@ -54,31 +66,14 @@ export class CartService {
       total: 0
     };
   }
-  calcTotalPrice(items) {
-    return items.reduce((acc, item) => acc + Number( Number(item.price)) * Number(item.count), 0);
-  }
-
-  private cartChanged() {
+  addToCart(item) {
+    this.showorders =  true;
+    // tslint:disable-next-line:no-shadowed-variable
     this.cart.items = this.cart.items.map(item => {
-      item.total = item.price * item.count;
+      item.total = item.price * item.quantity;
       return item;
     });
-    this.cart.total = this.calcTotalPrice(this.cart.items);
-    // this.storage.set('NG_CART', this.cart);
-    // localStorage.setItem('CART', this.cart);
-    // this.events.publish('cart:changed', this.cart);
-  }
-
-  public addToCart(item: any) {
-    if (!this.exist(item)) {
-    this.cart.items = this.cart.items.map(elm => {
-      if (elm.id === item.id) {
-        this.cart.items.push(item);
-        console.log(this.cart, 'cart1');
-      }
-      return this.cart;
-    });
-    }
+    this.cart.items.push(item);
     this.cartChanged();
-  }
+}
 }

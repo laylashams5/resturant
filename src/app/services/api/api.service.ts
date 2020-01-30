@@ -1,42 +1,35 @@
 import { Injectable } from '@angular/core';
-// import { Https, RequestOptions, Headers } from '@angular/common/http';
-// import 'rxjs/add/operator/map';
-
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-    // private data: any = {};
-    // private opt: RequestOptions;
-    //  private url: string = 'https://matger-tutia.com/api/';
-
+    private data: any = {};
+    private url = 'https://matger-tutia.com/api/';
+    private httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
     constructor(
-    //   public http: Http
+    private http: HttpClient
       ) {
     }
+    private extractData(res: Response) {
+      console.log(res, 'res');
+      let body = res;
+      console.log(body, 'body');
 
-    // getData(endpoint: string, data:{} = {}) {
-    //     const fullUrl: string = this.url + endpoint;
-    //     return new Promise(resolve => {
-    //         this.http.post(fullUrl, {
-    //             data
-    //         },this.opt)
-    //             .map(res => res.json())
-    //             .subscribe(data => {
-    //                 this.data = data;
-    //                 resolve(this.data.data);
-    //             });
-    //     });
-    // }
-
-    // postData(endpoint: string, data:{} = {}) {
-    //     const fullUrl: string = this.url + endpoint;
-    //     return new Promise(resolve => {
-    //         this.http.post(fullUrl, {
-    //             data
-    //         },this.opt)
-    //         .map(res => res.json())
-    //         .subscribe(data => resolve(this.data));
-    //     });
-    // }
+      return body || { };
+    }
+    getData(endpoint: string, data:{} = {}): Observable<any> {
+      const fullUrl: string = this.url + endpoint;
+      return this.http.post(fullUrl,{
+        data
+      },this.httpOptions).pipe(
+        map(this.extractData) 
+      );
+    }
 }
