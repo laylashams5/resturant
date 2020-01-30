@@ -8,11 +8,13 @@ import { StorageServiceModule } from 'ngx-webstorage-service';
 import { LocalStorageService } from './services/storage/storage.service';
 import { ApiService } from './services/api/api.service';
 import { CartService } from './services/cart/cart.service';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
