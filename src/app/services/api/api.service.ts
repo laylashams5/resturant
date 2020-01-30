@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
@@ -17,19 +17,15 @@ export class ApiService {
     private http: HttpClient
       ) {
     }
-    private extractData(res: Response) {
-      console.log(res, 'res');
-      let body = res;
-      console.log(body, 'body');
-
-      return body || { };
-    }
     getData(endpoint: string, data:{} = {}): Observable<any> {
       const fullUrl: string = this.url + endpoint;
       return this.http.post(fullUrl,{
         data
       },this.httpOptions).pipe(
-        map(this.extractData) 
+        map(res => {
+          let body = res.data;
+          return body || {}
+        })
       );
     }
 }

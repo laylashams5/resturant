@@ -94,7 +94,7 @@ export class CustomerComponent implements OnInit {
     ) {
       this.cart = this.cartservice.getCart();
       // console.log(this.localStorage.get('cart'));
-      // this.api.getData('getitems').subscribe(data => {this.meals    = data;  console.log(this.meals); });
+      // this.api.getData('getitems').subscribe(data => {this.meals    = data;  console.log(data, 'LL'); });
    }
 
   ngOnInit() {
