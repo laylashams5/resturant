@@ -17,15 +17,17 @@ export class ApiService {
     private http: HttpClient
       ) {
     }
-    getData(endpoint: string, data:{} = {}): Observable<any> {
+    private Data(res: Response) {
+      const body = res;
+      console.log(body);
+      return body || {};
+    }
+    getData(endpoint: string, data: {} = {}): Observable<any> {
       const fullUrl: string = this.url + endpoint;
-      return this.http.post(fullUrl,{
+      return this.http.post(fullUrl, {
         data
-      },this.httpOptions).pipe(
-        map(res => {
-          let body = res.data;
-          return body || {}
-        })
+      }, this.httpOptions).pipe(
+        map(this.Data)
       );
     }
 }

@@ -10,7 +10,7 @@ export class CartService {
     total: 0
   };
   showorders = false;
-  events: any;
+  showmeal: any;
   constructor(
     public storage: LocalStorageService) { }
   /**
@@ -62,18 +62,27 @@ export class CartService {
   }
   clear() {
     this.cart = {
-      items: [],
+      items: [
+        {
+          name: '',
+          subcategories: [],
+        }
+      ],
       total: 0
     };
   }
-  addToCart(item) {
-    this.showorders =  true;
-    // tslint:disable-next-line:no-shadowed-variable
-    this.cart.items = this.cart.items.map(item => {
-      item.total = item.price * item.quantity;
-      return item;
-    });
-    this.cart.items.push(item);
-    this.cartChanged();
+ShowMeal(meal) {
+  this.showmeal = meal.name;
+  console.log(this.showmeal, 'm');
+}
+addToCart(item) {
+  this.showorders =  true;
+  // tslint:disable-next-line:no-shadowed-variable
+  this.cart.items = this.cart.items.map(item => {
+    item.total = item.price * item.quantity;
+    return item;
+  });
+  this.cart.items.push(item);
+  this.cartChanged();
 }
 }

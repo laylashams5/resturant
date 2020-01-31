@@ -92,18 +92,20 @@ export class CustomerComponent implements OnInit {
     private localStorage: LocalStorageService,
     public api: ApiService
     ) {
-      this.cart = this.cartservice.getCart();
+      this.cart = this.cartservice.getCart() || this.localStorage.get('cart');
       // console.log(this.localStorage.get('cart'));
       // this.api.getData('getitems').subscribe(data => {this.meals    = data;  console.log(data, 'LL'); });
+      // this.mealid = this.cart.items.map(
+      //   elm => {
+      //   return elm;
+      // });
+      // console.log(this.mealid);
    }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   showCats(meal) {
     this.showcats = true;
     this.mealname = meal.name;
-    // this.mealname = meal.subcategories.filter(elm => elm.id === elm.meal_id)[0].meal_id;
-    console.log(this.mealname, 'meal');
     this.mealid = meal.id;
     this.subcats =  meal.subcategories.map(elm => {
        return elm;
