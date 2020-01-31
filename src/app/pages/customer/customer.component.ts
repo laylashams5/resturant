@@ -96,7 +96,6 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.cart = this.cartservice.getCart();
-    console.log(this.cart, 'c');
   }
   showCats(meal) {
     this.showcats = true;

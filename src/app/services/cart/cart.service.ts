@@ -23,7 +23,7 @@ export class CartService {
     acc + Number( Number(item.price)  *  Number(item.quantity)) + Number(item.tax), 0);
   }
   public exist(item) {
-    return this.cart.items.filter(elm => elm.id === item.id).length;
+    return this.cart.items.filter(elm => elm.id === item.id);
   }
    cartChanged() {
     this.cart.items = this.cart.items.map(item => {
@@ -72,7 +72,6 @@ addToCart(item) {
   // if (!this.exist(item)) {
   this.cart.items.push(item);
   this.cart.total = this.calcTotalPrice(this.cart.items);
-  console.log(this.cart, 'cc');
   this.cartChanged();
   // }
 }
