@@ -5,14 +5,15 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class CartService {
-  cart =  {
+  cart =   this.storage.get('cart') || {
     items: [],
     total: 0
   };
   showorders = false;
   showmeal: any;
   constructor(
-    public storage: LocalStorageService) { }
+    public storage: LocalStorageService
+    ) { }
   /**
    * Calc items total price
    * @param items [{price: any, count: any} ..]
@@ -31,10 +32,6 @@ export class CartService {
     });
     this.cart.total = this.calcTotalPrice(this.cart.items);
     this.storage.set('cart', this.cart);
-  }
-  getCart() {
-    // this.cart.items = this.storage.get('cart');
-    return this.cart;
   }
   increaseCount(item) {
     if (!this.exist(item)) {
@@ -62,12 +59,7 @@ export class CartService {
   }
   clear() {
     this.cart = {
-      items: [
-        {
-          name: '',
-          subcategories: [],
-        }
-      ],
+      items: [],
       total: 0
     };
   }
@@ -77,12 +69,30 @@ ShowMeal(meal) {
 }
 addToCart(item) {
   this.showorders =  true;
-  // tslint:disable-next-line:no-shadowed-variable
-  this.cart.items = this.cart.items.map(item => {
-    item.total = item.price * item.quantity;
-    return item;
-  });
+  // if (!this.exist(item)) {
   this.cart.items.push(item);
+  this.cart.total = this.calcTotalPrice(this.cart.items);
+  console.log(this.cart, 'cc');
   this.cartChanged();
+  // }
+}
+getCart() {
+  console.log(this.cart, );
+  return this.cart;
+}
+getItemCount() {
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.quantity)), 0);
+}
+getItemTotalPrice() {
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.price)) * Number(item.quantity), 0);
+}
+getFinalTAmount() {
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.price)  *  Number(item.quantity)) + Number(item.tax), 0);
+}
+getTax() {
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.tax)), 0);
+}
+getDisc() {
+  return this.cart.items.reduce((acc, item) => acc + Number( Number(item.disc)), 0);
 }
 }

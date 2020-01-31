@@ -37,14 +37,14 @@
       </div>
     </div>
   </div>
-  <div class="row order-row"  *ngIf="cart && cart.items && cart.items.length">
+  <div class="row order-row"   *ngIf="cart && cart.items && cart.items.length">
     <div class="col bg-color1">
       <p class="order-title">
         ORDERS
       </p>
     </div>
   </div>
-  <div class="table-responsive" *ngIf="cart && cart.items && cart.items.length">
+  <div class="table-responsive"  *ngIf="cart && cart.items && cart.items.length">
   <table class="table table-borderless order-table">
     <thead>
       <tr>
@@ -104,20 +104,20 @@
             <p class="order-title1"> _  </p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1">{{getItemCount(item)}}</p>
+            <p class="order-title1">{{cartservice.getItemCount(item)}}</p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1">$ {{getItemTotalPrice(item)}} </p>
+            <p class="order-title1">$ {{cartservice.getItemTotalPrice(item)}} </p>
           </th>
           <th scope="col" class="foot-bg">
-            <p class="order-title1"> {{getDisc(item)}} </p>
+            <p class="order-title1"> {{cartservice.getDisc(item)}} </p>
           </th>
           <th scope="col" class="foot-bg">          
-            <p class="order-title1">$ {{getTax(item)}}</p>
+            <p class="order-title1">$ {{cartservice.getTax(item)}}</p>
           </th>
           <th scope="col" class="foot-bg">          
             <p class="order-title1">$ 
-              {{getFinalTAmount(item)}}
+              {{cartservice.getFinalTAmount(item)}}
             </p>
           </th>
         </tr>
